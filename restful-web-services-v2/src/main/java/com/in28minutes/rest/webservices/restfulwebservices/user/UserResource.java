@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +28,7 @@ public class UserResource {
 		this.service = service;
 	}
 
-	@GetMapping("/users")
+	@GetMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<User> retrieveAllUsers() {
 		return service.findAll();
 	}
@@ -38,7 +39,7 @@ public class UserResource {
 	//EntityModel
 	//WebMvcLinkBuilder
 	
-	@GetMapping("/users/{id}")
+	@GetMapping(value = "/users/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public EntityModel<User> retrieveUser(@PathVariable int id) {
 		User user = service.findOne(id);
 		
@@ -58,7 +59,7 @@ public class UserResource {
 		service.deleteById(id);
 	}
 
-	@PostMapping("/users")
+	@PostMapping(value = "/users", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
 		
 		User savedUser = service.save(user);

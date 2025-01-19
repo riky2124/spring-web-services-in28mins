@@ -1,7 +1,10 @@
 package com.in28minutes.rest.webservices.restfulwebservices.exception;
 
 import java.time.LocalDateTime;
+import java.util.stream.Collectors;
 
+import jakarta.annotation.Nullable;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -34,9 +37,9 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 	}
 	
 	@Override
-	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-		
-		ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), "Total Errors:" + ex.getErrorCount() + " First Error:" + ex.getFieldError().getDefaultMessage(),
+	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, @Nullable HttpHeaders headers, @Nullable HttpStatusCode status, WebRequest request) {
+		String errorString = ex.getFieldErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.joining(", "));
+		ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), "Total Errors: " + ex.getErrorCount() + "; Error: " + errorString,
 				request.getDescription(false));
 
 		return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
