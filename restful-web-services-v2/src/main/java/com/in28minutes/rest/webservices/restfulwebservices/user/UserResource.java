@@ -28,7 +28,7 @@ public class UserResource {
 		this.service = service;
 	}
 
-	@GetMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/users")
 	public List<User> retrieveAllUsers() {
 		return service.findAll();
 	}
@@ -39,7 +39,7 @@ public class UserResource {
 	//EntityModel
 	//WebMvcLinkBuilder
 	
-	@GetMapping(value = "/users/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/users/{id}")
 	public EntityModel<User> retrieveUser(@PathVariable int id) {
 		User user = service.findOne(id);
 		
@@ -59,7 +59,7 @@ public class UserResource {
 		service.deleteById(id);
 	}
 
-	@PostMapping(value = "/users", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/users", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
 		
 		User savedUser = service.save(user);
