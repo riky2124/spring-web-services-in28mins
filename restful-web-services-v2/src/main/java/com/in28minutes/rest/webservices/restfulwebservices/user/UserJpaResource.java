@@ -112,5 +112,23 @@ public class UserJpaResource {
 
 	}
 
+	@GetMapping("/jpa/users/{id}/posts/{pid}")
+	public EntityModel<Post> retrievePostForUser(@PathVariable int id, @PathVariable int pid) {
+		Optional<User> user = userRepository.findById(id);
+
+		if(user.isEmpty())
+			throw new UserNotFoundException("id:"+id);
+
+		Optional<Post> post = postRepository.findById(pid);
+		if(post.isEmpty())
+			throw new PostNotFoundException("Post id:" + pid);
+
+		EntityModel<Post> entityModel = EntityModel.of(post.get());
+
+		WebMvcLinkBuilder link =  linkTo(methodOn(this.getClass()).retrievePostsForUser(id));
+		entityModel.add(link.withRel("user-all-posts"));
+
+		return entityModel;
+	}
 	
 }
