@@ -4,6 +4,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 import java.net.URI;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
@@ -70,6 +71,11 @@ public class UserResource {
 						.toUri();   
 		
 		return ResponseEntity.created(location).build();
+	}
+
+	@GetMapping(value = "/test-async")
+	public CompletableFuture<String> testAsync(){
+		return service.getAsync();
 	}
 	
 	

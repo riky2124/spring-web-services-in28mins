@@ -3,8 +3,10 @@ package com.in28minutes.rest.webservices.restfulwebservices.user;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Predicate;
 
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -19,7 +21,7 @@ public class UserDaoService {
 	static {
 		users.add(new User(++usersCount,"Adam",LocalDate.now().minusYears(30)));
 		users.add(new User(++usersCount,"Eve",LocalDate.now().minusYears(25)));
-		users.add(new User(++usersCount,"Jim",LocalDate.now().minusYears(20)));
+		users.add(new User(++usersCount,"Jim \\u4e16\\u754c",LocalDate.now().minusYears(20)));
 	}
 	
 	public List<User> findAll() {
@@ -45,5 +47,15 @@ public class UserDaoService {
 		users.removeIf(predicate);
 	}
 
-	
+	@Async
+	public CompletableFuture<String> getAsync(){
+		return CompletableFuture.supplyAsync(() -> {
+			try {
+				Thread.sleep(10000);
+			} catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+			return "This is the response.";
+        });
+	}
 }

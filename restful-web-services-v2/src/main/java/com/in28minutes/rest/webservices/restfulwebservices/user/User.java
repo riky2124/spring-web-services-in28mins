@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.in28minutes.rest.webservices.restfulwebservices.serializer.UnicodeSerializer;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -20,6 +22,7 @@ public class User {
 	private Integer id;
 	
 	@Size(min=2, message = "Name should have atleast 2 characters")
+	@JsonSerialize(using = UnicodeSerializer.class)
 	//@JsonProperty("user_name")
 	private String name;
 	
